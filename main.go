@@ -7,6 +7,7 @@ import "net/http"
 import "strings"
 import "net/url"
 import "fmt"
+import "github.com/mattn/go-colorable"
 
 type Response struct {
 	Results []struct {
@@ -39,28 +40,30 @@ func main() {
 
 	res, err := http.Get("http://api.godoc.org/search?q=" + url.QueryEscape(query))
 	if err != nil {
-		log.Fatalf("request failed: %s", err)
+		log.Critical("request failed: %s", err)
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		log.Fatalf("request error: %s", http.StatusText(res.StatusCode))
+		log.Critical("request error: %s", http.StatusText(res.StatusCode))
 	}
 
 	var body Response
 	log.Check(json.NewDecoder(res.Body).Decode(&body))
 
-	println()
+	out := colorable.NewColorableStdout()
+
+	fmt.Println()
 	for _, pkg := range body.Results {
 		if top && subpackage(pkg.Path) {
 			continue
 		}
 
-		fmt.Printf("  \033[1m%s\033[m\n", strip(pkg.Path))
-		fmt.Printf("  %s\n", description(pkg.Synopsis))
-		fmt.Printf("  godoc.org/pkg/%s\n\n", pkg.Path)
+		fmt.Fprintf(out, "  \033[1m%s\033[m\n", strip(pkg.Path))
+		fmt.Fprintf(out, "  %s\n", description(pkg.Synopsis))
+		fmt.Fprintf(out, "  godoc.org/pkg/%s\n\n", pkg.Path)
 	}
-	println()
+	fmt.Println()
 }
 
 func subpackage(s string) bool {
