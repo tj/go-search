@@ -39,12 +39,12 @@ func main() {
 
 	res, err := http.Get("http://api.godoc.org/search?q=" + url.QueryEscape(query))
 	if err != nil {
-		log.Fatalf("request failed: %s", err)
+		log.Critical("request failed: %s", err)
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		log.Fatalf("request error: %s", http.StatusText(res.StatusCode))
+		log.Critical("request error: %s", http.StatusText(res.StatusCode))
 	}
 
 	var body Response
