@@ -1,12 +1,15 @@
 package main
 
-import "github.com/segmentio/go-log"
-import "github.com/tj/docopt"
-import "encoding/json"
-import "net/http"
-import "strings"
-import "net/url"
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"strings"
+
+	log "github.com/segmentio/go-log"
+	"github.com/tj/docopt"
+)
 
 type Response struct {
 	Results []struct {
