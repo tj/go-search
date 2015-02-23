@@ -7,6 +7,8 @@ import "net/http"
 import "strings"
 import "net/url"
 import "fmt"
+import "golang.org/x/crypto/ssh/terminal"
+import "os"
 
 type Response struct {
 	Results []struct {
@@ -16,6 +18,7 @@ type Response struct {
 }
 
 var Version = "0.0.1"
+
 
 const Usage = `
   Usage:
@@ -49,16 +52,23 @@ func main() {
 
 	var body Response
 	log.Check(json.NewDecoder(res.Body).Decode(&body))
+	
+	var colorized string
+	if terminal.IsTerminal(int(os.Stdout.Fd())) {
+		colorized = "  \033[1m%s\033[m\n"
+	} else {
+		colorized = "%s\n"
+	}
 
 	println()
 	for _, pkg := range body.Results {
 		if top && subpackage(pkg.Path) {
 			continue
 		}
-
-		fmt.Printf("  \033[1m%s\033[m\n", strip(pkg.Path))
+		
+		fmt.Printf(colorized, strip(pkg.Path))
 		fmt.Printf("  %s\n", description(pkg.Synopsis))
-		fmt.Printf("  godoc.org/pkg/%s\n\n", pkg.Path)
+		fmt.Printf("  http://godoc.org/pkg/%s\n\n", pkg.Path)
 	}
 	println()
 }
