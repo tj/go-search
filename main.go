@@ -69,8 +69,9 @@ func main() {
 		}
 
 		fmt.Printf("  \033[1m%s\033[m\n", strip(pkg.Path))
-		fmt.Printf("  %s\n", description(pkg.Synopsis))
-		fmt.Printf("  godoc.org/pkg/%s\n\n", pkg.Path)
+		fmt.Printf("  \033[36mdsc:\033[0m %s\n", description(pkg.Synopsis))
+		fmt.Printf("  \033[36mdoc:\033[0m godoc.org/pkg/%s\n", pkg.Path)
+		fmt.Printf("  \033[36mpkg:\033[0m %s\n\n", pkg.Path)
 	}
 	println()
 }
