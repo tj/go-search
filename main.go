@@ -1,12 +1,16 @@
 package main
 
-import "github.com/segmentio/go-log"
-import "github.com/tj/docopt"
-import "encoding/json"
-import "net/http"
-import "strings"
-import "net/url"
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+
+	"github.com/segmentio/go-log"
+	"github.com/tj/docopt"
+)
 
 type Response struct {
 	Results []struct {
@@ -19,11 +23,12 @@ var Version = "0.0.1"
 
 const Usage = `
   Usage:
-    go-search <query>... [--top]
+    go-search <query>... [--top] [--count n]
     go-search -h | --help
     go-search --version
 
   Options:
+    -n, --count n    number of results [default: -1]
     -t, --top        top-level packages only
     -h, --help       output help information
     -v, --version    output version
@@ -32,6 +37,9 @@ const Usage = `
 
 func main() {
 	args, err := docopt.Parse(Usage, nil, true, Version, false)
+	log.Check(err)
+
+	n, err := strconv.ParseInt(args["--count"].(string), 10, 32)
 	log.Check(err)
 
 	query := strings.Join(args["<query>"].([]string), " ")
@@ -49,6 +57,10 @@ func main() {
 
 	var body Response
 	log.Check(json.NewDecoder(res.Body).Decode(&body))
+
+	if n > 0 {
+		body.Results = body.Results[:n]
+	}
 
 	println()
 	for _, pkg := range body.Results {

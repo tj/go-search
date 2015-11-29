@@ -14,7 +14,7 @@ $ go get github.com/tj/go-search
 ## Lazy
 
 - Add an alias: `alias gos=go-search`
-- Hold cmd+click link to open in a browser
+- Press cmd+click link to open in a browser
 
 ## License
 
