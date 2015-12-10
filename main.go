@@ -3,12 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 
-	"github.com/segmentio/go-log"
 	"github.com/tj/docopt"
 )
 
@@ -37,10 +37,14 @@ const Usage = `
 
 func main() {
 	args, err := docopt.Parse(Usage, nil, true, Version, false)
-	log.Check(err)
+	if err != nil {
+		log.Fatalf("error: %s", err)
+	}
 
 	n, err := strconv.ParseInt(args["--count"].(string), 10, 32)
-	log.Check(err)
+	if err != nil {
+		log.Fatalf("error: %s", err)
+	}
 
 	query := strings.Join(args["<query>"].([]string), " ")
 	top := args["--top"].(bool)
@@ -56,7 +60,10 @@ func main() {
 	}
 
 	var body Response
-	log.Check(json.NewDecoder(res.Body).Decode(&body))
+	err = json.NewDecoder(res.Body).Decode(&body)
+	if err != nil {
+		log.Fatalf("error parsing response: %s", err)
+	}
 
 	if n > 0 {
 		body.Results = body.Results[:n]
@@ -68,10 +75,10 @@ func main() {
 			continue
 		}
 
-		fmt.Printf("  \033[1m%s\033[m\n", strip(pkg.Path))
-		fmt.Printf("  \033[36mdsc:\033[0m %s\n", description(pkg.Synopsis))
-		fmt.Printf("  \033[36mdoc:\033[0m godoc.org/pkg/%s\n", pkg.Path)
-		fmt.Printf("  \033[36mpkg:\033[0m %s\n\n", pkg.Path)
+		fmt.Printf("  \033[1m%s\033[m\n", pkg.Path)
+		fmt.Printf("  godoc.org/pkg/%s\n", pkg.Path)
+		fmt.Printf("  %s\n", description(pkg.Synopsis))
+		fmt.Printf("\n")
 	}
 	println()
 }
@@ -91,8 +98,4 @@ func description(s string) string {
 	}
 
 	return s
-}
-
-func strip(s string) string {
-	return strings.Replace(s, "github.com/", "", 1)
 }
