@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/mitchellh/go-wordwrap"
 	"github.com/tj/docopt"
 )
 
@@ -97,5 +98,7 @@ func description(s string) string {
 		return "no description"
 	}
 
+	s = wordwrap.WrapString(s, 60)
+	s = strings.Replace(s, "\n", "\n  ", -1)
 	return s
 }
