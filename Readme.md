@@ -7,6 +7,8 @@
 
 ## Installation
 
+Via `go-get` or the binary [releases](https://github.com/tj/go-search/releases).
+
 ```
 $ go get github.com/tj/go-search
 ```
