@@ -13,6 +13,7 @@ import (
 	"github.com/tj/docopt"
 )
 
+// Response represents the response to be returned
 type Response struct {
 	Results []struct {
 		Path     string
@@ -20,8 +21,10 @@ type Response struct {
 	}
 }
 
+// Version is the package version
 var Version = "0.0.1"
 
+// Usage is the package usage information
 const Usage = `
   Usage:
     go-search <query>... [--top] [--count n]
