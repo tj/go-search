@@ -53,7 +53,7 @@ func main() {
 	query := strings.Join(args["<query>"].([]string), " ")
 	top := args["--top"].(bool)
 
-	res, err := http.Get("http://api.godoc.org/search?q=" + url.QueryEscape(query))
+	res, err := http.Get("https://api.godoc.org/search?q=" + url.QueryEscape(query))
 	if err != nil {
 		log.Fatalf("request failed: %s", err)
 	}
