@@ -15,6 +15,7 @@ import (
 	"github.com/tj/docopt"
 )
 
+// Response represents the response to be returned
 type Response struct {
 	Results []struct {
 		Path     string
@@ -22,8 +23,10 @@ type Response struct {
 	}
 }
 
+// Version is the package version
 var Version = "0.0.1"
 
+// Usage is the package usage information
 const Usage = `
   Usage:
     go-search <query>... [--top] [--count n] [--open]
@@ -31,7 +34,7 @@ const Usage = `
     go-search --version
 
   Options:
-    -n, --count n    number of results [default: -1]
+    -n, --count n    number of results [default: 5]
     -t, --top        top-level packages only
     -o, --open       open godoc.org search results in default browser
     -h, --help       output help information
@@ -53,7 +56,7 @@ func main() {
 	query := strings.Join(args["<query>"].([]string), " ")
 	top := args["--top"].(bool)
 
-	res, err := http.Get("http://api.godoc.org/search?q=" + url.QueryEscape(query))
+	res, err := http.Get("https://api.godoc.org/search?q=" + url.QueryEscape(query))
 	if err != nil {
 		log.Fatalf("request failed: %s", err)
 	}
@@ -72,11 +75,16 @@ func main() {
 	if open := args["--open"].(bool); open {
 		gopen.Open("https://godoc.org/?q=" + url.QueryEscape(query))
 		os.Exit(0)
+<<<<<<< HEAD
 	}
 
 	if n > 0 {
 		body.Results = body.Results[:n]
+=======
+>>>>>>> minor updates:
 	}
+
+	body.Results = body.Results[:n]
 
 	println()
 	for _, pkg := range body.Results {
@@ -89,7 +97,6 @@ func main() {
 		fmt.Printf("  %s\n", description(pkg.Synopsis))
 		fmt.Printf("\n")
 	}
-	println()
 }
 
 func subpackage(s string) bool {
