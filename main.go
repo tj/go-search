@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/mitchellh/go-wordwrap"
+	gopen "github.com/petermbenjamin/go-open"
 	"github.com/tj/docopt"
 )
 
@@ -24,13 +26,14 @@ var Version = "0.0.1"
 
 const Usage = `
   Usage:
-    go-search <query>... [--top] [--count n]
+    go-search <query>... [--top] [--count n] [--open]
     go-search -h | --help
     go-search --version
 
   Options:
     -n, --count n    number of results [default: -1]
     -t, --top        top-level packages only
+    -o, --open       open godoc.org search results in default browser
     -h, --help       output help information
     -v, --version    output version
 
@@ -64,6 +67,11 @@ func main() {
 	err = json.NewDecoder(res.Body).Decode(&body)
 	if err != nil {
 		log.Fatalf("error parsing response: %s", err)
+	}
+
+	if open := args["--open"].(bool); open {
+		gopen.Open("https://godoc.org/?q=" + url.QueryEscape(query))
+		os.Exit(0)
 	}
 
 	if n > 0 {
