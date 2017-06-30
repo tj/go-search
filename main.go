@@ -31,7 +31,7 @@ const Usage = `
     go-search --version
 
   Options:
-    -n, --count n    number of results [default: -1]
+    -n, --count n    number of results [default: 5]
     -t, --top        top-level packages only
     -o, --open       open godoc.org search results in default browser
     -h, --help       output help information
@@ -74,9 +74,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	if n > 0 {
-		body.Results = body.Results[:n]
-	}
+	body.Results = body.Results[:n]
 
 	println()
 	for _, pkg := range body.Results {
