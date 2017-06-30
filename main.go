@@ -24,7 +24,7 @@ type Response struct {
 }
 
 // Version is the package version
-var Version = "0.0.1"
+var Version = "0.0.3"
 
 // Usage is the package usage information
 const Usage = `
