@@ -15,6 +15,7 @@ import (
 	"github.com/tj/docopt"
 )
 
+// Response represents the response to be returned
 type Response struct {
 	Results []struct {
 		Path     string
@@ -22,8 +23,10 @@ type Response struct {
 	}
 }
 
+// Version is the package version
 var Version = "0.0.1"
 
+// Usage is the package usage information
 const Usage = `
   Usage:
     go-search <query>... [--top] [--count n] [--open]
@@ -53,7 +56,7 @@ func main() {
 	query := strings.Join(args["<query>"].([]string), " ")
 	top := args["--top"].(bool)
 
-	res, err := http.Get("http://api.godoc.org/search?q=" + url.QueryEscape(query))
+	res, err := http.Get("https://api.godoc.org/search?q=" + url.QueryEscape(query))
 	if err != nil {
 		log.Fatalf("request failed: %s", err)
 	}
