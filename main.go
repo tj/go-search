@@ -75,13 +75,6 @@ func main() {
 	if open := args["--open"].(bool); open {
 		gopen.Open("https://godoc.org/?q=" + url.QueryEscape(query))
 		os.Exit(0)
-<<<<<<< HEAD
-	}
-
-	if n > 0 {
-		body.Results = body.Results[:n]
-=======
->>>>>>> minor updates:
 	}
 
 	body.Results = body.Results[:n]
