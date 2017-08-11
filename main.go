@@ -77,6 +77,16 @@ func main() {
 		os.Exit(0)
 	}
 
+	rSize := int64(len(body.Results))
+	if rSize == 0 {
+		fmt.Println("No project found")
+		return
+	}
+
+	if rSize < n {
+		n = rSize
+	}
+
 	body.Results = body.Results[:n]
 
 	println()
