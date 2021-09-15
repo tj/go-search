@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/mitchellh/go-wordwrap"
-	gopen "github.com/petermbenjamin/go-open"
+	gopen "github.com/pbnj/go-open"
 	"github.com/tj/docopt"
 )
 
