@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/mitchellh/go-wordwrap"
-	gopen "github.com/petermbenjamin/go-open"
+	gopen "github.com/pbnj/go-open"
 	"github.com/tj/docopt"
 )
 
@@ -77,7 +77,9 @@ func main() {
 		os.Exit(0)
 	}
 
-	body.Results = body.Results[:n]
+	if len(body.Results) > int(n) {
+		body.Results = body.Results[:n]
+	}
 
 	println()
 	for _, pkg := range body.Results {
