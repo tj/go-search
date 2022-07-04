@@ -77,7 +77,9 @@ func main() {
 		os.Exit(0)
 	}
 
-	body.Results = body.Results[:n]
+	if len(body.Results) > int(n) {
+		body.Results = body.Results[:n]
+	}
 
 	println()
 	for _, pkg := range body.Results {
